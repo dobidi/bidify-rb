@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bidify'
 
 describe 'Bidify' do
