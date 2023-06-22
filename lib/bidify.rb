@@ -8,6 +8,8 @@ require 'nokogiri'
 #
 #    bidified_html = Bidify.bidify(regular_html)
 module Bidify
+  @bidifiable_tags = %w[h1 h2 h3 h4 h5 h6 p a ul ol li blockquote]
+
   class << self
     ###
     # bidify applies dir="auto" to the given html string
@@ -22,21 +24,27 @@ module Bidify
     def bidify_recursively(html_node, options = {})
       return unless html_node.children.count.positive?
 
+      apply_bidi(html_node, options)
+    end
+
+    def apply_bidi(node, options)
       seen_the_first_bidifiable_element = false
 
-      html_node.children.each do |child_node|
+      node.children.each do |child_node|
         next if child_node.blank?
 
         bidify_recursively(child_node)
 
-        child_node.set_attribute('dir', 'auto') if options[:root] || seen_the_first_bidifiable_element
+        if (options[:root] || seen_the_first_bidifiable_element) && @bidifiable_tags.include?(child_node.name)
+          child_node.set_attribute('dir', 'auto')
+        end
 
-        seen_the_first_bidifiable_element = true if bidifiable_node?
+        seen_the_first_bidifiable_element = true if actual_content?(child_node)
       end
     end
 
-    def bidifiable_node?(node)
-      child_node.element? || (child_node.text? && !child_node.blank?)
+    def actual_content?(node)
+      node.element? || (node.text? && !node.blank?)
     end
   end
 end
