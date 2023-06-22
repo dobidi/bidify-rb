@@ -1,7 +1,5 @@
 # Bidify (Ruby)
 
-[![Gem Version](https://badge.fury.io/rb/bidify.svg)](https://badge.fury.io/rb/bidify)
-
 Bidify helps to add bidirectional text support to HTML documents.
 
 The project is in its very early stage of development and its interface or functionality may break from one version to another. Use it with caution.
@@ -11,8 +9,9 @@ The project is in its very early stage of development and its interface or funct
 ```rb
 require 'bidify'
 
-html_input = '<div>some content even in nested format</div>'
+html_input = '<p>some content even in nested format</p>'
 bidified_html = Bidify.bidify(html_input)
+# bidified_html: '<p dir="auto">some content even in nested format</p>' 
 ```
 
 ## License
