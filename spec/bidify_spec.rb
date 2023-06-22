@@ -5,8 +5,8 @@ require 'bidify'
 describe 'Bidify' do
   describe '.bidify' do
     it 'bidifies a simple html' do
-      input = '<div>some text</div>'
-      expected_output = '<div dir="auto">some text</div>'
+      input = '<p>some text</p>'
+      expected_output = '<p dir="auto">some text</p>'
 
       actual_output = Bidify.bidify(input)
 
@@ -14,8 +14,8 @@ describe 'Bidify' do
     end
 
     it 'bidifies a html with multiple tags' do
-      input = '<div>some text</div><p>A paragraph</p>'
-      expected_output = %(<div dir="auto">some text</div><p dir="auto">A paragraph</p>)
+      input = '<h1>some text</h1><p>A paragraph</p>'
+      expected_output = %(<h1 dir="auto">some text</h1><p dir="auto">A paragraph</p>)
 
       actual_output = Bidify.bidify(input)
 
@@ -80,6 +80,24 @@ describe 'Bidify' do
           <li dir="auto">Item 2</li>
         </ul>
       HTML
+
+      actual_output = Bidify.bidify(input)
+
+      expect(actual_output).to eq expected_output
+    end
+
+    it 'skips span elements' do
+      input = '<span>Not getting affected</span>'
+      expected_output = '<span>Not getting affected</span>'
+
+      actual_output = Bidify.bidify(input)
+
+      expect(actual_output).to eq expected_output
+    end
+
+    it 'skips img elements' do
+      input = '<img src="image.png">'
+      expected_output = '<img src="image.png">'
 
       actual_output = Bidify.bidify(input)
 
