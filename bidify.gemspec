@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.homepage      = 'https://github.com/dobidi/bidify-rb'
   s.licenses      = ['LGPL-3.0-or-later']
   s.summary       = 'Add bidi support to HTML'
-  s.description   = 'This gem help you to add bidirectional text support to any HTML partials'
+  s.description   = 'Bidify helps to add bidirectional text support to HTML document'
 
   s.files         = Dir.glob('{bin/*,lib/**/*,[A-Z]*}')
   s.platform      = Gem::Platform::RUBY
