@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   test:
-    name: Ruby specs
     runs-on: [ubuntu-latest]
     strategy:
       matrix:
@@ -15,6 +14,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
 
-      - name: Ruby specs
+      - name: Run RSpec
         run: bundle exec rspec
