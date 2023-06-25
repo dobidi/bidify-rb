@@ -133,5 +133,27 @@ describe 'Bidify' do
 
       expect(actual_output).to eq expected_output
     end
+
+    it 'skips blank lines' do
+      input = <<~HTML
+        <blockquote>
+
+          <p>Item 1</p>
+          <p>Item 2</p>
+        </blockquote>
+      HTML
+
+      expected_output = <<~HTML
+        <blockquote dir="auto">
+
+          <p>Item 1</p>
+          <p dir="auto">Item 2</p>
+        </blockquote>
+      HTML
+
+      actual_output = Bidify.bidify(input)
+
+      expect(actual_output).to eq expected_output
+    end
   end
 end
