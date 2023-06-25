@@ -4,7 +4,7 @@ require 'bidify'
 
 describe 'Bidify' do
   describe '.bidify' do
-    it 'bidifies a simple html' do
+    it 'bidifies a single paragraph' do
       input = '<p>some text</p>'
       expected_output = '<p dir="auto">some text</p>'
 
@@ -13,9 +13,30 @@ describe 'Bidify' do
       expect(actual_output).to eq expected_output
     end
 
-    it 'bidifies a html with multiple tags' do
-      input = '<h1>some text</h1><p>A paragraph</p>'
-      expected_output = %(<h1 dir="auto">some text</h1><p dir="auto">A paragraph</p>)
+    it 'bidifies all non-list tags in bidifiable tags list' do
+      input = <<~HTML
+        <div>Content</div>
+        <h1>Content</h1>
+        <h2>Content</h2>
+        <h3>Content</h3>
+        <h4>Content</h4>
+        <h5>Content</h5>
+        <h6>Content</h6>
+        <p>Content</p>
+        <blockquote>Content</blockquote>
+      HTML
+
+      expected_output = <<~HTML
+        <div dir="auto">Content</div>
+        <h1 dir="auto">Content</h1>
+        <h2 dir="auto">Content</h2>
+        <h3 dir="auto">Content</h3>
+        <h4 dir="auto">Content</h4>
+        <h5 dir="auto">Content</h5>
+        <h6 dir="auto">Content</h6>
+        <p dir="auto">Content</p>
+        <blockquote dir="auto">Content</blockquote>
+      HTML
 
       actual_output = Bidify.bidify(input)
 
