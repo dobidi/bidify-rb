@@ -16,23 +16,16 @@ module Bidify
     def bidify(input_html)
       html_node = Nokogiri::HTML.fragment(input_html)
       bidify_recursively(html_node, { root: true })
+
       html_node.to_s
     end
 
     private
 
     def bidify_recursively(html_node, options = {})
-      return unless html_node.children.count.positive?
-
-      apply_bidi(html_node, options)
-    end
-
-    def apply_bidi(node, options)
       seen_the_first_bidifiable_element = false
 
-      node.children.each do |child_node|
-        next if child_node.blank?
-
+      html_node.children.each do |child_node|
         bidify_recursively(child_node)
 
         if (options[:root] || seen_the_first_bidifiable_element) && @bidifiable_tags.include?(child_node.name)

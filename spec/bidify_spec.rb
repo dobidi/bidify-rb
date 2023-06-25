@@ -118,18 +118,16 @@ describe 'Bidify' do
       expect(actual_output).to eq expected_output
     end
 
-    it 'skips span elements' do
-      input = '<span>Not getting affected</span>'
-      expected_output = '<span>Not getting affected</span>'
+    it 'skips tags not included in bidifiable tags by default' do
+      input = <<~HTML
+        <span>Not getting affected</span>
+        <img src="image.png">
+        <main>content</main>
+        <section>content</section>
+        <aside>content</aside>
+      HTML
 
-      actual_output = Bidify.bidify(input)
-
-      expect(actual_output).to eq expected_output
-    end
-
-    it 'skips img elements' do
-      input = '<img src="image.png">'
-      expected_output = '<img src="image.png">'
+      expected_output = input
 
       actual_output = Bidify.bidify(input)
 
