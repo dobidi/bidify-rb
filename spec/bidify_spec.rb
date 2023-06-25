@@ -22,18 +22,50 @@ describe 'Bidify' do
       expect(actual_output).to eq expected_output
     end
 
-    it 'bidifies nested elements and ignore the first inner element' do
+    it 'bidifies non list nested elements and ignore the first inner element' do
+      input = <<~HTML
+        <blockquote>
+          <p>Item 1</p>
+          <p>Item 2</p>
+        </blockquote>
+      HTML
+
+      expected_output = <<~HTML
+        <blockquote dir="auto">
+          <p>Item 1</p>
+          <p dir="auto">Item 2</p>
+        </blockquote>
+      HTML
+
+      actual_output = Bidify.bidify(input)
+
+      expect(actual_output).to eq expected_output
+    end
+
+    it "doesn't bidify li elements by default" do
       input = <<~HTML
         <ul>
-          <li>Item 1</li>
-          <li>Item 2</li>
+          <li>
+            Item 1
+            <p>with paragraph</p>
+          </li>
+          <li>
+            <p>Paragram at the begining of</p>
+            Item 2
+          </li>
         </ul>
       HTML
 
       expected_output = <<~HTML
         <ul dir="auto">
-          <li>Item 1</li>
-          <li dir="auto">Item 2</li>
+          <li>
+            Item 1
+            <p dir="auto">with paragraph</p>
+          </li>
+          <li>
+            <p>Paragram at the begining of</p>
+            Item 2
+          </li>
         </ul>
       HTML
 
@@ -42,21 +74,21 @@ describe 'Bidify' do
       expect(actual_output).to eq expected_output
     end
 
-    it 'bidifies nested elements with plain text as the first content' do
+    it 'bidifies non-list nested elements with plain text as the first content' do
       input = <<~HTML
-        <ul>
+        <blockquote>
           blah
-          <li>Item 1</li>
-          <li>Item 2</li>
-        </ul>
+          <p>Item 1</p>
+          <p>Item 2</p>
+        </blockquote>
       HTML
 
       expected_output = <<~HTML
-        <ul dir="auto">
+        <blockquote dir="auto">
           blah
-          <li dir="auto">Item 1</li>
-          <li dir="auto">Item 2</li>
-        </ul>
+          <p dir="auto">Item 1</p>
+          <p dir="auto">Item 2</p>
+        </blockquote>
       HTML
 
       actual_output = Bidify.bidify(input)
@@ -64,21 +96,21 @@ describe 'Bidify' do
       expect(actual_output).to eq expected_output
     end
 
-    it 'bidifies nested elements and ignores html comments' do
+    it 'bidifies non-list nested elements and ignores html comments' do
       input = <<~HTML
-        <ul>
+        <blockquote>
           <!-- comment -->
-          <li>Item 1</li>
-          <li>Item 2</li>
-        </ul>
+          <p>Item 1</p>
+          <p>Item 2</p>
+        </blockquote>
       HTML
 
       expected_output = <<~HTML
-        <ul dir="auto">
+        <blockquote dir="auto">
           <!-- comment -->
-          <li>Item 1</li>
-          <li dir="auto">Item 2</li>
-        </ul>
+          <p>Item 1</p>
+          <p dir="auto">Item 2</p>
+        </blockquote>
       HTML
 
       actual_output = Bidify.bidify(input)
