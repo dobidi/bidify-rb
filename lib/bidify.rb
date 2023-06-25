@@ -8,7 +8,7 @@ require 'nokogiri'
 #
 #    bidified_html = Bidify.bidify(regular_html)
 module Bidify
-  @bidifiable_tags = %w[h1 h2 h3 h4 h5 h6 p a ul ol li blockquote]
+  @bidifiable_tags = %w[h1 h2 h3 h4 h5 h6 p a ul ol blockquote]
 
   class << self
     ###
