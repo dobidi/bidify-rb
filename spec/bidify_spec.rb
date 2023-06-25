@@ -3,7 +3,7 @@
 require 'bidify'
 
 describe 'Bidify' do
-  describe '.bidify' do
+  describe '#bidify' do
     it 'bidifies a single paragraph' do
       input = '<p>some text</p>'
       expected_output = '<p dir="auto">some text</p>'
@@ -146,6 +146,7 @@ describe 'Bidify' do
         <main>content</main>
         <section>content</section>
         <aside>content</aside>
+        <a>content</a>
       HTML
 
       expected_output = input
