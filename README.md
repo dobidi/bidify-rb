@@ -10,7 +10,7 @@ The project is in its very early stage of development and its interface or funct
 require 'bidify'
 
 html_input = '<p>some content even in nested format</p>'
-bidified_html = Bidify.bidify(html_input)
+bidified_html = Bidify.bidify_html_string(html_input)
 # bidified_html: '<p dir="auto">some content even in nested format</p>' 
 ```
 
