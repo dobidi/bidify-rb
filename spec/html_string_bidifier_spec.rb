@@ -205,5 +205,4 @@ describe 'Bidify' do
 
     expect(actual_output).to eq expected_output
   end
-
 end
