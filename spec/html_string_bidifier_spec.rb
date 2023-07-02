@@ -3,7 +3,7 @@
 require 'bidify'
 
 describe 'Bidify' do
-  describe '::StringHtmlBidifier.apply' do
+  describe '::StringHtmlBidifier.apply with defaults' do
     let(:bidifier) { Bidify::HtmlStringBidifier.new }
 
     it 'bidifies a single paragraph' do
@@ -180,4 +180,30 @@ describe 'Bidify' do
       expect(actual_output).to eq expected_output
     end
   end
+
+  it 'bidifies a table with :with_table_support option' do
+    input = <<~HTML
+      <table>
+        <tr>
+          <td>راست left</td>
+          <td>left راست</td>
+        </tr>
+      </table>
+    HTML
+
+    expected_output = <<~HTML
+      <table dir="auto">
+        <tr>
+          <td>راست left</td>
+          <td dir="auto">left راست</td>
+        </tr>
+      </table>
+    HTML
+
+    bidifier = Bidify::HtmlStringBidifier.new(with_table_support: true)
+    actual_output = bidifier.apply(input)
+
+    expect(actual_output).to eq expected_output
+  end
+
 end
