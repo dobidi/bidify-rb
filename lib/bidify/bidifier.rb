@@ -3,7 +3,9 @@
 module Bidify
   # Super class for custom bidifiers
   class Bidifier
-    def initialize
+    def initialize(options = {})
+      @options = options
+
       configure
     end
 
@@ -15,6 +17,7 @@ module Bidify
 
     def configure
       @bidifiable_tags = DEFAULT_BIDIFIABLE_TAGS.dup
+      @bidifiable_tags.concat(TABLE_TAGS) if @options[:with_table_support]
     end
 
     def bidify_recursively(html_node, options = {})
