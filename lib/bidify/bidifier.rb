@@ -3,6 +3,11 @@
 module Bidify
   # Super class for custom bidifiers
   class Bidifier
+    ###
+    # Instanciate a bidifier object with the given optional options hash
+    #
+    # @param [Hash] options
+    #
     def initialize(options = {})
       @options = options
 
