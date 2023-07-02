@@ -11,6 +11,7 @@ require 'bidify/html_string_bidifier'
 #    bidified_html = Bidify.bidify_html_string(regular_html)
 module Bidify
   DEFAULT_BIDIFIABLE_TAGS = %w[div h1 h2 h3 h4 h5 h6 p ul ol blockquote].freeze
+  TABLE_TAGS = %w[table thead tbody th tr td].freeze
 
   class << self
     ###
