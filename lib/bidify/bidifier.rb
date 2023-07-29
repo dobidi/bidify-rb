@@ -24,6 +24,7 @@ module Bidify
       @bidifiable_tags = DEFAULT_BIDIFIABLE_TAGS.dup
       @bidifiable_tags.concat(TABLE_TAGS) if @options[:with_table_support]
       @bidifiable_tags.concat(@options[:including_tags]) if @options.key?(:including_tags)
+      @bidifiable_tags.delete_if { |tag| @options[:excluding_tags]&.include?(tag) }
       @bidifiable_tags = @options[:only_tags] if @options.key?(:only_tags)
     end
 
