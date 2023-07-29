@@ -58,10 +58,23 @@ puts bidifier.apply('<div>input stringified html</div>')
 
 Available options with their default values are as follows:
 
+- `excluding_tags: []`
+
+    Removes tags from the list of bidifiable tags. This option affects the
+    provided tags in `including_tags` options.
+
+- `including_tags: []`
+
+    Adds new tags to the list of bidifiable tags
+
 - `greedy: false`
 
     By default, bidification stops when it reaches an element that has `dir`
     attribute. Use `true` to disregard any existing `dir` attributes.
+
+- `only_tags: []`
+
+    It sets the bidifiable tags to the given tags.
 
 - `with_table_support: false`
 

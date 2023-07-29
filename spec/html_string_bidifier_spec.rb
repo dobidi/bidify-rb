@@ -258,4 +258,72 @@ describe 'Bidify' do
 
     expect(actual_output).to eq expected_output
   end
+
+  it 'only bidifies specified tags using `only_tags` option' do
+    input = <<~HTML
+      <p>راست left</p>
+      <div>left راست</div>
+    HTML
+
+    expected_output = <<~HTML
+      <p dir="auto">راست left</p>
+      <div>left راست</div>
+    HTML
+
+    bidifier = Bidify::HtmlStringBidifier.new(only_tags: ['p'])
+    actual_output = bidifier.apply(input)
+
+    expect(actual_output).to eq expected_output
+  end
+
+  it 'bidies specified additional tags using `including_tags` option' do
+    input = <<~HTML
+      <p>راست left</p>
+      <xyz>left راست</xyz>
+    HTML
+
+    expected_output = <<~HTML
+      <p dir="auto">راست left</p>
+      <xyz dir="auto">left راست</xyz>
+    HTML
+
+    bidifier = Bidify::HtmlStringBidifier.new(including_tags: ['xyz'])
+    actual_output = bidifier.apply(input)
+
+    expect(actual_output).to eq expected_output
+  end
+
+  it "doesn't bidify specified excluded tags using `excluding_tags` option" do
+    input = <<~HTML
+      <p>راست left</p>
+      <div>left راست</div>
+    HTML
+
+    expected_output = <<~HTML
+      <p dir="auto">راست left</p>
+      <div>left راست</div>
+    HTML
+
+    bidifier = Bidify::HtmlStringBidifier.new(excluding_tags: ['div'])
+    actual_output = bidifier.apply(input)
+
+    expect(actual_output).to eq expected_output
+  end
+
+  it '`excluding_tags` option overrides `including_tags`' do
+    input = <<~HTML
+      <p>راست left</p>
+      <xyz>left راست</xyz>
+    HTML
+
+    expected_output = <<~HTML
+      <p dir="auto">راست left</p>
+      <xyz>left راست</xyz>
+    HTML
+
+    bidifier = Bidify::HtmlStringBidifier.new(including_tags: ['xyz'], excluding_tags: ['xyz'])
+    actual_output = bidifier.apply(input)
+
+    expect(actual_output).to eq expected_output
+  end
 end
