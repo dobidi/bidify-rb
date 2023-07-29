@@ -46,6 +46,8 @@ module Bidify
     end
 
     def stop_recursion_at?(node)
+      return false if @options[:greedy] == true
+
       node.has_attribute?('dir')
     end
   end
