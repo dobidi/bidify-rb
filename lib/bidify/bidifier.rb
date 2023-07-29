@@ -29,6 +29,8 @@ module Bidify
       seen_the_first_bidifiable_element = false
 
       html_node.children.each do |child_node|
+        next if stop_recursion_at?(child_node)
+
         bidify_recursively(child_node)
 
         if (options[:root] || seen_the_first_bidifiable_element) && @bidifiable_tags.include?(child_node.name)
@@ -41,6 +43,12 @@ module Bidify
 
     def actual_content?(node)
       node.element? || (node.text? && !node.blank?)
+    end
+
+    def stop_recursion_at?(node)
+      return false if @options[:greedy] == true
+
+      node.has_attribute?('dir')
     end
   end
 end
