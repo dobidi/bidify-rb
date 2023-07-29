@@ -275,4 +275,21 @@ describe 'Bidify' do
 
     expect(actual_output).to eq expected_output
   end
+
+  it 'bidies specified additional tags using `including_tags` option' do
+    input = <<~HTML
+      <p>راست left</p>
+      <xyz>left راست</xyz>
+    HTML
+
+    expected_output = <<~HTML
+      <p dir="auto">راست left</p>
+      <xyz dir="auto">left راست</xyz>
+    HTML
+
+    bidifier = Bidify::HtmlStringBidifier.new(including_tags: ['xyz'])
+    actual_output = bidifier.apply(input)
+
+    expect(actual_output).to eq expected_output
+  end
 end
