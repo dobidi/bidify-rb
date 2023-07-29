@@ -258,4 +258,21 @@ describe 'Bidify' do
 
     expect(actual_output).to eq expected_output
   end
+
+  it 'only bidifies specified tags using `only_tags` option' do
+    input = <<~HTML
+      <p>راست left</p>
+      <div>left راست</div>
+    HTML
+
+    expected_output = <<~HTML
+      <p dir="auto">راست left</p>
+      <div>left راست</div>
+    HTML
+
+    bidifier = Bidify::HtmlStringBidifier.new(only_tags: ['p'])
+    actual_output = bidifier.apply(input)
+
+    expect(actual_output).to eq expected_output
+  end
 end

@@ -23,6 +23,7 @@ module Bidify
     def configure
       @bidifiable_tags = DEFAULT_BIDIFIABLE_TAGS.dup
       @bidifiable_tags.concat(TABLE_TAGS) if @options[:with_table_support]
+      @bidifiable_tags = @options[:only_tags] if @options.key?(:only_tags)
     end
 
     def bidify_recursively(html_node, options = {})
