@@ -179,6 +179,32 @@ describe 'Bidify' do
 
       expect(actual_output).to eq expected_output
     end
+
+    it 'stops recursive bidification on an element with explicit dir attribute' do
+      input = <<~HTML
+        <div>
+          <p>Item 1</p>
+          <div dir="ltr">
+            <p>Item 2</p>
+            <p>Item 3</p>
+          </div>
+        </div>
+      HTML
+
+      expected_output = <<~HTML
+        <div dir="auto">
+          <p>Item 1</p>
+          <div dir="ltr">
+            <p>Item 2</p>
+            <p>Item 3</p>
+          </div>
+        </div>
+      HTML
+
+      actual_output = bidifier.apply(input)
+
+      expect(actual_output).to eq expected_output
+    end
   end
 
   it 'bidifies a table with :with_table_support option' do
