@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
   s.required_ruby_version = '>= 2.7.0'
 
-  s.add_dependency 'nokogiri', '~>1.14'
+  s.add_dependency 'nokogiri', '~>1.15'
 
   s.metadata['rubygems_mfa_required'] = 'true'
 end
