@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2023-08-26
+### Security
+- Upgrade `nokogiry` for security issues with libxml2 dependency (#14)
+
 ## [0.3.0] - 2023-07-30
 
 ### Added
@@ -34,7 +38,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 The initial release with the core functionality (#1)
 
-[unreleased]: https://github.com/dobidi/bidify-rb/compare/v0.3.0...HEAD
+[unreleased]: https://github.com/dobidi/bidify-rb/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/dobidi/bidify-rb/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/dobidi/bidify-rb/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/dobidi/bidify-rb/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/dobidi/bidify-rb/compare/v0.1.0...v0.1.1
