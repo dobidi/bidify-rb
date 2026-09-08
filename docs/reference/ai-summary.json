@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bidify Algorithm Specification",
+  "version": "0.3.1",
+  "description": "Machine-readable specification for the bidify HTML bidirectional text algorithm",
+  "algorithm": {
+    "name": "bidify",
+    "type": "post-order-depth-first-tree-transformation",
+    "purpose": "Add dir=\"auto\" to HTML elements for bidirectional text support",
+    "parser": "HTML fragment parser (not full document)",
+    "traversal": {
+      "order": "post-order",
+      "direction": "depth-first",
+      "sibling_order": "left-to-right"
+    }
+  },
+  "defaultBidifiableTags": [
+    "div", "h1", "h2", "h3", "h4", "h5", "h6",
+    "p", "ul", "ol", "blockquote"
+  ],
+  "tableTags": [
+    "table", "thead", "tbody", "th", "tr", "td"
+  ],
+  "configuration": {
+    "options": {
+      "with_table_support": {
+        "type": "boolean",
+        "default": false,
+        "description": "Enable table tag bidification"
+      },
+      "including_tags": {
+        "type": "array",
+        "items": { "type": "string" },
+        "default": [],
+        "description": "Additional tags to bidify"
+      },
+      "excluding_tags": {
+        "type": "array",
+        "items": { "type": "string" },
+        "default": [],
+        "description": "Tags to exclude from bidification"
+      },
+      "only_tags": {
+        "type": "array",
+        "items": { "type": "string" },
+        "default": null,
+        "description": "Restrict to ONLY these tags (mutually exclusive with including/excluding)"
+      },
+      "greedy": {
+        "type": "boolean",
+        "default": false,
+        "description": "Ignore existing dir attributes, recurse into them and overwrite"
+      }
+    },
+    "precedence": [
+      "only_tags",
+      "excluding_tags",
+      "including_tags",
+      "with_table_support",
+      "DEFAULT_TAGS"
+    ],
+    "effectiveTagsAlgorithm": "IF only_tags SET: effective = only_tags ELSE: effective = DEFAULT_TAGS ∪ (with_table_support ? TABLE_TAGS : ∅) ∪ including_tags - excluding_tags"
+  },
+  "coreRules": {
+    "firstContentRule": {
+      "description": "First actual content child of each container is skipped; subsequent bidifiable siblings get dir=\"auto\"",
+      "actualContentDefinition": {
+        "element": true,
+        "nonBlankText": true,
+        "blankText": false,
+        "comment": false,
+        "processingInstruction": false
+      },
+      "rootHandling": "Root fragment has is_root=true, so its first content child is skipped but root itself never bidified"
+    },
+    "recursionStop": {
+      "default": "Stop at any element with dir attribute",
+      "greedy": "Never stop for dir attribute"
+    },
+    "listHandling": {
+      "li": "Never bidified by default (not in DEFAULT_TAGS)",
+      "ul_ol": "Bidified as containers"
+    }
+  },
+  "nodeRequirements": {
+    "properties": [
+      "node_type: 'element' | 'text' | 'comment' | ...",
+      "name: string (lowercase for elements)",
+      "children: array of nodes (ordered)",
+      "attributes: map<string, string>",
+      "text_content: string (for text nodes)",
+      "is_blank: boolean (text nodes only)"
+    ],
+    "methods": [
+      "has_attribute(name)",
+      "set_attribute(name, value)",
+      "get_attribute(name)"
+    ]
+  },
+  "outputGuarantees": [
+    "Only dir attribute added/modified",
+    "All other attributes preserved",
+    "Attribute order preserved",
+    "Whitespace in text nodes preserved",
+    "HTML comments preserved",
+    "Valid HTML fragment output",
+    "No elements added/removed",
+    "No text content modified",
+    "No wrapper elements added"
+  ],
+  "testMatrix": {
+    "core": ["B01", "B02", "B03", "B04", "F01", "F02", "F03", "F04", "F05", "F06", "L01", "L02"],
+    "standard": ["D01", "D02", "D03", "D04", "T01", "T02", "T03", "C01", "C02", "C03", "C04", "C05", "C06"],
+    "full": ["M01", "M02", "A01", "A02", "A03", "U01", "U02", "U03", "E01", "E02", "E03", "E04", "E05"]
+  },
+  "complianceLevels": {
+    "core": "Minimum viable implementation",
+    "standard": "Production-ready with all config options",
+    "full": "Complete edge case handling"
+  },
+  "referenceImplementation": {
+    "language": "Ruby",
+    "repository": "https://github.com/dobidi/bidify-rb",
+    "version": "0.3.1",
+    "entryPoint": "Bidify.bidify_html_string(html_string)",
+    "classes": {
+      "Bidify": "Module with DEFAULT_BIDIFIABLE_TAGS, TABLE_TAGS, bidify_html_string",
+      "HtmlStringBidifier": "String API, inherits from Bidifier",
+      "Bidifier": "Core algorithm, configure(), bidify_recursively(), actual_content?(), stop_recursion_at?()"
+    }
+  },
+  "relatedSpecs": [
+    "https://www.unicode.org/reports/tr9/",
+    "https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir",
+    "https://html.spec.whatwg.org/multipage/dom.html#the-dir-attribute"
+  ]
+}
